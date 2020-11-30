@@ -1,5 +1,14 @@
 # PBO1-Project
 
-Projek Pemrograman Berbasis Objek 1, menggunakan Python.
+Object Oriented Programming 1 project, made with Python (version 3.9).
 
-Lakukan semua perubahan pada branch dengan nama masing-masing, kemudian lakukan pull request untuk merge ke main branch.
+Installation step:
+
+1. Use virtualenv for isolated environment (optional)
+2. Install required module with
+
+    ```raw
+    pip install -r requirements.txt
+    ```
+
+3. Copy dbconfig-example.yaml to pbo1-project/ and rename it to dbconfig.yaml, then fill all the field with your database settings.
