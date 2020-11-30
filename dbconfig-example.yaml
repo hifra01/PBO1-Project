@@ -1,0 +1,8 @@
+# Salin file ini ke dalam folder pbo1-project/ dengan nama dbconfig.yaml
+# Kemudian sesuaikan properti yang ada dengan database Anda
+
+dbconfig:
+  user: # INSERT DB USERNAME HERE
+  password: # INSERT DB PASSWORD HERE
+  host: # INSERT DB HOST HERE
+  database: # INSERT DB NAME HERE
