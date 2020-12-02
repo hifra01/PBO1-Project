@@ -1,0 +1,68 @@
+1. Daftar Kota
+- Jember
+- Yogyakarta
+- Malang
+
+2. Daftar Tempat Wisata di kota tsb
+Jember
+- Watu Ulo
+- Rembangan
+- J88
+- DIra Garden
+
+Yogyakarta
+- Malioboro
+- Borobudur
+- Merapi Park
+
+Malang
+- Jatim Park
+- Jatim park 2
+- Jatim Park 3
+
+3. Contoh Paket, isine onok Kota, Durasi (hari), Tempat Wisatane opoan
+Paket Jember 3 hari
+- Jember
+- 3 Hari3 Malam
+  - Watu Ulo
+  - Rembangan
+  - J88
+
+Paket Jember 1 Minggu
+- Jember
+- 6 Hari 7 Malam
+  - Watu Ulo
+  - Rembangan
+  - J88
+  - Ppuma
+  - DiraGarden
+
+Paket Malang 3 hari
+- Malang
+- 3 hari 3 malam
+  - Jatim Park 1
+  - Jatim Park 2
+  - jatim park 3
+
+Paket Malang 5 hari
+- Malang
+- 5 hari 5 malam
+  - Jatim Park 1
+  - Jatim Park 2
+  - jatim park 3
+  - Kebun apel batu
+  - Dinosaurus park
+
+Paket Jogjagarta 3 hari
+- Yogyakarta
+- 3 hari 3 malam
+  - Malioboro
+  - Candi Borobudur
+  - Merapi Park
+
+Paket Jogjagarta 1 minggu
+- Yogyakarta
+- 7 hari 6 malam
+  - Malioboro
+  - Wisata seluruh Candi di Yogyakarta
+  - Merapi Park
