@@ -10,5 +10,5 @@ Installation step:
     ```raw
     pip install -r requirements.txt
     ```
-
-3. Copy dbconfig-example.yaml to pbo1-project/ and rename it to dbconfig.yaml, then fill all the field with your database settings.
+3. Use MySQL and import ```aplikasiwisata.sql```
+4. Copy dbconfig-example.yaml to pbo1-project/ and rename it to dbconfig.yaml, then fill all the field with your database settings.
