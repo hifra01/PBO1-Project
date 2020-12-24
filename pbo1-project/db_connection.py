@@ -29,11 +29,13 @@ class DBConnection:
     def select_one(self, query, value=tuple()):
         self.__cursor.execute(query, value)
         result = self.__cursor.fetchone()
+        self.__con.commit()
         return result
 
     def select_all(self, query, value=tuple()):
         self.__cursor.execute(query, value)
         result = self.__cursor.fetchall()
+        self.__con.commit()
         return result
 
     def execute(self, query, value=tuple()):
@@ -55,7 +57,9 @@ class DBConnection:
             return False
 
     def get_last_row_id(self):
-        return self.__cursor.lastrowid
+        result = self.__cursor.lastrowid
+        self.__con.commit()
+        return result
 
 
 if __name__ == '__main__':

@@ -17,7 +17,7 @@ class View:
     @staticmethod
     def start():
         View.clear_screen()
-        print(f"Selamat Datang di Aplikasi Paket Wisata\n- Nikmati Pariwisata yang Komplit dan Enjoy\n"
+        print(f"Selamat Datang di Aplikasi Paket Wisata\n- Nikmati Pariwisata yang Komplit dan Enjoy -\n"
               f"1. Login\n"
               f"2. Register\n"
               f"Ketik 'exit' untuk keluar dari program.")
@@ -33,12 +33,23 @@ class View:
         print(":: Buat akun baru ::")
 
     @staticmethod
+    def confirm_payment_dialog():
+        View.clear_screen()
+        print(":: Konfirmasi Pembayaran Pesanan ::")
+
+    @staticmethod
+    def cancel_order_dialog():
+        View.clear_screen()
+        print(":: Ajukan Pembatalan Order ::")
+
+    @staticmethod
     def main_menu_dialog():
         View.clear_screen()
         print(f"Silahkan Pilih Menu Yang Ingin Dilakukan\n"
               f"1. Pesan Paket Wisata Sekarang\n"
               f"2. Riwayat Pesanan\n"
-              f"3. Ajukan Pembatalan Transaksi\n"
+              f"3. Konfirmasi Pembayaran Pesanan\n"
+              f"4. Ajukan Pembatalan Transaksi\n"
               f"Ketik 'exit' untuk keluar\n\n")
 
     @staticmethod
@@ -59,7 +70,7 @@ class View:
         print(f"Kode Booking: {detail['kode_booking']}\n"
               f"Paket Wisata: {detail['paket_wisata']}\n"
               f"Tanggal Berangkat: {detail['tanggal_berangkat']}\n"
-              f"Tanggal Pulang: {detail['tanggal_pulang']}"
+              f"Tanggal Pulang: {detail['tanggal_pulang']}\n"
               f"Status: {detail['status']}\n\n"
               f""
               f"Daftar Destinasi Wisata:")

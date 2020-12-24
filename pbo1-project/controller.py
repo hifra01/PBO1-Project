@@ -11,6 +11,12 @@ class CustomerController:
         self._cs_model: CustomerModel = CustomerModel()
         self._order_model: OrderModel = OrderModel()
 
+    def generate_kode_booking(self, order: Order):
+        id_kota = self._order_model.get_city_id_from_paket_wisata(order)
+        new_id = int(self._order_model.get_last_order_id()) + 1
+        new_booking_code = str(id_kota) + str(order.id_paket_wisata) + str(new_id).zfill(5)
+        return new_booking_code
+
     def start(self):
         try:
             View.start()
@@ -69,7 +75,9 @@ class CustomerController:
             elif choice == '2':
                 self.list_order_history()
             elif choice == '3':
-                pass
+                self.confirm_payment()
+            elif choice == '4':
+                self.cancel_order()
             else:
                 print("Pilihan tidak valid")
 
@@ -91,13 +99,16 @@ class CustomerController:
         daftar_peserta = list()
         for peserta in range(jumlah_peserta):
             nama_peserta = input("Nama Peserta: ")
-            ktp_peserta = input("No. KTP Peserta = ")
+            ktp_peserta = input("No. KTP Peserta: ")
             daftar_peserta.append({'nama_peserta': nama_peserta, 'no_ktp': ktp_peserta})
         new_order.set_daftar_peserta(daftar_peserta)
 
-        confirm_order = input("Apa Anda yakin akan menambahkan order tersebut? [y/n]")
+        confirm_order = input("Apa Anda yakin akan menambahkan order tersebut? [y/n]: ")
         if confirm_order.lower() == 'y':
+            new_order.kode_booking = self.generate_kode_booking(new_order)
             self._order_model.add_new_order_to_database(new_order, self.customer)
+            print(f"Kode Booking Anda: {new_order.kode_booking}")
+            input("Tekan Enter untuk kembali ke main menu...")
             self.main_menu()
         elif confirm_order.lower() == 'n':
             input("Transaksi dibatalkan. Tekan Enter untuk kembali ke menu...")
@@ -111,36 +122,41 @@ class CustomerController:
         if choice == '1':
             kode_booking = input("Masukkan kode booking: ").upper()
             order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
+            print()
             View.order_detail(order_detail)
-            input("\n Tekan Enter untuk kembali")
+            input("\nTekan Enter untuk kembali")
             self.main_menu()
         elif choice == '2':
             self.main_menu()
 
     def confirm_payment(self):
         # TODO: Bikin customer method untuk konfirmasi pembayaran
+        View.confirm_payment_dialog()
         kode_booking = input("Masukkan kode booking: ").upper()
         order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
         View.order_detail(order_detail)
-        kode_pembayaran = input("Masukkan nomor bukti pembayaran").upper()
-        confirm = input("Apakah Anda yakin akan melakukan pembayaran? [y/n]").upper()
+        kode_pembayaran = input("Masukkan nomor bukti pembayaran: ").upper()
+        confirm = input("Apakah Anda yakin akan melakukan pembayaran? [y/n]: ").upper()
         if confirm == 'Y':
             self._order_model.add_payment_proof(kode_booking, kode_pembayaran)
             input("Transaksi berhasil. Tekan Enter untuk kembali ke menu...")
+            self.main_menu()
         elif confirm == 'N':
             input("Transaksi dibatalkan. Tekan Enter untuk kembali ke menu...")
             self.main_menu()
 
     def cancel_order(self):
         # TODO: Bikin customer method untuk membatalkan pesanan
+        View.cancel_order_dialog()
         kode_booking = input("Masukkan kode booking: ").upper()
         order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
         View.order_detail(order_detail)
 
         confirm = input("Apakah Anda ingin membatalkan order ini? [y/n]").upper()
         if confirm == 'Y':
-
-            pass
+            self._order_model.propose_order_cancel(kode_booking)
+            input("Berhasil mengajukan pembatalan. Tekan Enter untuk kembali ke menu...")
+            self.main_menu()
         elif confirm == 'N':
             input("Tekan Enter untuk kembali ke menu...")
             self.main_menu()

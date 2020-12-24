@@ -124,14 +124,15 @@ class OrderModel(DBConnection):
         order_query = "INSERT INTO `order` " \
                       "(kode_booking, customer, id_paket_wisata, id_status_order, " \
                       "tanggal_berangkat, tanggal_pulang) " \
-                      "VALUES (%s, %s, %s, 'menunggu_pembayaran', " \
+                      "VALUES (%s, %s, %s, %s, " \
                       "%s, %s)"
         order_value = (order.kode_booking, customer.get_customer_id(),
-                       order.id_paket_wisata, order.id_status_order,
+                       order.id_paket_wisata, 'menunggu_pembayaran',
                        order.tanggal_berangkat, order.tanggal_pulang)
         self.execute(order_query, order_value)
 
         new_order_id = self.get_last_row_id()
+        print(new_order_id)
         daftar_peserta = list()
         for peserta in order.daftar_peserta:
             daftar_peserta.append((new_order_id, peserta['nama_peserta'], peserta['no_ktp']))
@@ -155,7 +156,7 @@ class OrderModel(DBConnection):
             update_status_query = "UPDATE `order` " \
                                   "SET id_status_order='menunggu_verifikasi' " \
                                   "WHERE id = %s"
-            update_status_value = (order_id['id'])
+            update_status_value = (order_id['id'],)
             self.execute(update_status_query, update_status_value)
         else:
             print("Order Not Found")
@@ -169,13 +170,24 @@ class OrderModel(DBConnection):
             cancel_query = "UPDATE `order` " \
                            "SET id_status_order='menunggu_pembatalan' " \
                            "WHERE id = %s"
-            cancel_value = (order_id['id'])
+            cancel_value = (order_id['id'],)
 
             self.execute(cancel_query, cancel_value)
         else:
             print("Order Not Found")
 
+    def get_city_id_from_paket_wisata(self, order: Order):
+        query = "SELECT kota FROM paket_wisata WHERE id = %s"
+        value = (order.id_paket_wisata,)
+        result = self.select_one(query, value)
+        return result['kota']
+
+    def get_last_order_id(self):
+        query = "SELECT MAX(id) as last_id FROM `order`"
+        result = self.select_one(query)
+        return result['last_id']
+
 
 if __name__ == "__main__":
     model = OrderModel()
-    print(model.get_daftar_paket_wisata())
+    print(model.get_last_order_id())
