@@ -1,3 +1,4 @@
+import os.path as path
 import mysql.connector
 import yaml
 
@@ -5,10 +6,11 @@ import yaml
 class DBConnection:
     def __init__(self):
         """
-        This class will load configuration from dbconfig.yaml file
+        This class will load MySQL database configuration from dbconfig.yaml file
         """
         try:
-            with open("dbconfig.yaml", 'r') as stream:
+            config_file = path.join(path.dirname(path.abspath(__file__)), 'dbconfig.yaml')
+            with open(config_file, 'r') as stream:
                 dbconfig = yaml.safe_load(stream)['dbconfig']
                 self.__con = mysql.connector.connect(
                     user=dbconfig['user'],
@@ -24,15 +26,37 @@ class DBConnection:
         except mysql.connector.Error as e:
             print(e.msg)
 
-    @property
-    def cursor(self):
-        return self.__cursor
-
-    def select_one(self, query, value):
-        self.cursor.execute(query, value)
-        result = self.cursor.fetchone()
+    def select_one(self, query, value=tuple()):
+        self.__cursor.execute(query, value)
+        result = self.__cursor.fetchone()
         return result
+
+    def select_all(self, query, value=tuple()):
+        self.__cursor.execute(query, value)
+        result = self.__cursor.fetchall()
+        return result
+
+    def execute(self, query, value=tuple()):
+        try:
+            self.__cursor.execute(query, value)
+            self.__con.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def execute_many(self, query, value=tuple()):
+        try:
+            self.__cursor.executemany(query, value)
+            self.__con.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def get_last_row_id(self):
+        return self.__cursor.lastrowid
 
 
 if __name__ == '__main__':
-    db = DBConnection()
+    pass
