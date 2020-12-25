@@ -55,12 +55,15 @@ class View:
     @staticmethod
     def order_history_list(orders: list):
         View.clear_screen()
-        for order in orders:
-            print(
-                f"Kode Booking: {order['kode_booking']}\n"
-                f"Paket Wisata: {order['paket_wisata']}\n"
-                f"Status: {order['keterangan']}\n"
-            )
+        if not orders:
+            print(f"Tidak ada riwayat order.\n")
+        else:
+            for order in orders:
+                print(
+                    f"Kode Booking: {order['kode_booking']}\n"
+                    f"Paket Wisata: {order['paket_wisata']}\n"
+                    f"Status: {order['keterangan']}\n"
+                )
         print(f"Pilih menu:\n"
               f"1. Lihat detail\n"
               f"2. Kembali\n")
@@ -85,8 +88,55 @@ class View:
 
     @staticmethod
     def list_paket_wisata(paket_wisata):
-        for paket in paket_wisata:
-            print(f"{paket['id']}. {paket['nama']} ({paket['durasi']} hari)")
+        if not paket_wisata:
+            print(f"Tidak ada paket wisata.\n")
+        else:
+            for paket in paket_wisata:
+                print(f"{paket['id']}. {paket['nama']} ({paket['durasi']} hari)")
+
+    @staticmethod
+    def admin_main_menu_dialog():
+        View.clear_screen()
+        print(f"Daftar Menu:\n"
+              f"1. Lihat Order Menunggu Verifikasi Pembayaran\n"
+              f"2. Verifikasi Pembayaran Order\n"
+              f"3. Lihat Order Menunggu Pembatalan\n"
+              f"4. Konfirmasi Pembatalan Order\n"
+              f"5. Tambah Admin Baru\n")
+
+    @staticmethod
+    def orders_waiting_confirmation(orders: list):
+        View.clear_screen()
+        if not orders:
+            print(f"Tidak ada riwayat order.\n")
+        else:
+            for order in orders:
+                print(
+                    f"Kode Booking: {order['kode_booking']}\n"
+                    f"Customer: {order['customer']}\n"
+                    f"Waktu Pesan: {order['created_date']}\n"
+                    f"Status: {order['keterangan']}\n"
+                )
+
+    @staticmethod
+    def verify_payment_code_dialog():
+        View.clear_screen()
+        print(":: Verifikasi bukti pembayaran ::")
+
+    @staticmethod
+    def verify_payment_order_detail(detail: dict):
+        print(
+            f"Kode Booking: {detail['kode_booking']}\n"
+            f"Customer: {detail['customer']}\n"
+            f"Waktu Pesan: {detail['created_date']}\n"
+            f"Kode Bukti Pembayaran: {detail['kode_bukti']}\n"
+            f"Status: {detail['keterangan']}\n"
+        )
+
+    @staticmethod
+    def confirm_order_cancel_dialog():
+        View.clear_screen()
+        print(":: Konfirmasi pembatalan order ::")
 
 #     def pesan_dialog(self):
 #         View.clear_screen()

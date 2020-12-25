@@ -1,7 +1,7 @@
 from db_connection import DBConnection
 import custom_exception as c_exc
 from order import Order
-from person import Customer
+from person import Customer, Admin
 
 
 class CustomerModel(DBConnection):
@@ -22,7 +22,6 @@ class CustomerModel(DBConnection):
             return result
 
     def register_new_user(self, data: dict) -> None:
-        # TODO: Tambah query untuk register customer baru, jangan lupa raise exception kalo ada error
         person_query = "INSERT INTO person (email, password, role) " \
                        "VALUES (%s, %s, 'customer')"
         person_value = (data['email'], data['password'])
@@ -68,10 +67,34 @@ class AdminModel(DBConnection):
         else:
             return result
 
+    def register_new_user(self, data: dict) -> None:
+        person_query = "INSERT INTO person (email, password, role) " \
+                       "VALUES (%s, %s, 'admin')"
+        person_value = (data['email'], data['password'])
+        commit_person = self.execute(person_query, person_value)
+        if commit_person:
+            person_id = self.get_last_row_id()
+            admin_query = "INSERT INTO `admin` " \
+                          "(person_id, nama) " \
+                          "VALUES (%s, %s)"
+            admin_value = (person_id, data['nama'])
+            return self.execute(admin_query, admin_value)
+        else:
+            return commit_person
+
 
 class OrderModel(DBConnection):
     def __init__(self):
         super().__init__()
+
+    def get_order_id_from_booking_code(self, kode_booking):
+        order_id_query = "SELECT id from `order` WHERE kode_booking = %s"
+        order_id_value = (kode_booking,)
+        order_id = self.select_one(order_id_query, order_id_value)
+        if order_id:
+            return order_id['id']
+        else:
+            return None
 
     def get_order_detail_by_booking_code(self, kode_booking: str) -> dict:
         detail: dict = dict()
@@ -186,6 +209,65 @@ class OrderModel(DBConnection):
         query = "SELECT MAX(id) as last_id FROM `order`"
         result = self.select_one(query)
         return result['last_id']
+
+    def get_orders_waiting_payment_information(self):
+        query = "SELECT o.kode_booking, c.nama_lengkap as customer, " \
+                "o.created_date, oss.keterangan " \
+                "FROM `order` o " \
+                "JOIN order_status_string oss on o.id_status_order = oss.id_status_order " \
+                "JOIN customers c on c.id = o.customer " \
+                "WHERE o.id_status_order='menunggu_verifikasi'"
+        result = self.select_all(query)
+        return result
+
+    def get_orders_waiting_cancel_confirmation(self):
+        query = "SELECT o.kode_booking, c.nama_lengkap AS customer, " \
+                "o.created_date, oss.keterangan " \
+                "FROM `order` o " \
+                "JOIN order_status_string oss on o.id_status_order = oss.id_status_order " \
+                "JOIN customers c on c.id = o.customer " \
+                "WHERE o.id_status_order='menunggu_pembatalan'"
+        result = self.select_all(query)
+        return result
+
+    def get_order_with_payment_from_booking_code(self, kode_booking):
+        order_id = self.get_order_id_from_booking_code(kode_booking)
+        if order_id:
+            query = "SELECT o.id, o.kode_booking, p.kode_bukti, c.nama_lengkap as customer, " \
+                    "o.created_date, oss.keterangan " \
+                    "FROM `order` o " \
+                    "JOIN order_status_string oss ON o.id_status_order = oss.id_status_order " \
+                    "JOIN customers c ON c.id = o.customer " \
+                    "JOIN pembayaran p ON o.id = p.order_id " \
+                    "WHERE o.id_status_order='menunggu_verifikasi' " \
+                    "AND o.id = %s " \
+                    "ORDER BY p.id desc "
+            value = (order_id,)
+            result = self.select_one(query, value)
+            return result
+        else:
+            print("Order Not Found.")
+
+    def verify_order_payment(self, kode_booking, admin: Admin):
+        order_id = self.get_order_id_from_booking_code(kode_booking)
+        if order_id:
+            query = "UPDATE pembayaran SET status_verifikasi=%s, petugas_verifikasi=%s " \
+                    "WHERE order_id=%s"
+            value = ('telah_verifikasi', admin.get_admin_id(), order_id)
+            self.execute(query, value)
+
+            order_query = "UPDATE `order` SET id_status_order = 'terbayar' " \
+                          "WHERE id=%s"
+            order_value = (order_id,)
+            self.execute(order_query, order_value)
+
+    def confirm_order_cancel(self, kode_booking):
+        order_id = self.get_order_id_from_booking_code(kode_booking)
+        if order_id:
+            query = "UPDATE `order` SET id_status_order='dibatalkan' " \
+                    "WHERE id = %s"
+            value = (order_id,)
+            self.execute(query, value)
 
 
 if __name__ == "__main__":

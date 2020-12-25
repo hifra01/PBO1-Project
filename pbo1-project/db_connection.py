@@ -18,7 +18,7 @@ class DBConnection:
                     host=dbconfig['host'],
                     database=dbconfig['database']
                 )
-                self.__cursor = self.__con.cursor(dictionary=True)
+                self.__cursor = self.__con.cursor(dictionary=True, buffered=True)
         except FileNotFoundError as e:
             print(e)
         except yaml.YAMLError as e:

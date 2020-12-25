@@ -33,8 +33,8 @@ class CustomerController:
             print(e)
             input("Tekan Enter untuk melanjutkan")
             self.start()
-        except Exception as e:
-            print(f"Something's wrong, I can feel it. And here's what I got:\n{e}")
+        except c_exc.ExitCommandInserted as e:
+            print(e)
 
     def login(self) -> None:
         try:
@@ -66,7 +66,7 @@ class CustomerController:
 
     def main_menu(self):
         View.main_menu_dialog()
-        choice = input("Masukkan Pilihan [1/2/3/exit]: ")
+        choice = input("Masukkan Pilihan [1/2/3/4/exit]: ")
         if choice.lower() == 'exit':
             raise c_exc.ExitCommandInserted()
         else:
@@ -130,7 +130,6 @@ class CustomerController:
             self.main_menu()
 
     def confirm_payment(self):
-        # TODO: Bikin customer method untuk konfirmasi pembayaran
         View.confirm_payment_dialog()
         kode_booking = input("Masukkan kode booking: ").upper()
         order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
@@ -146,7 +145,6 @@ class CustomerController:
             self.main_menu()
 
     def cancel_order(self):
-        # TODO: Bikin customer method untuk membatalkan pesanan
         View.cancel_order_dialog()
         kode_booking = input("Masukkan kode booking: ").upper()
         order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
@@ -160,13 +158,13 @@ class CustomerController:
         elif confirm == 'N':
             input("Tekan Enter untuk kembali ke menu...")
             self.main_menu()
-        pass
 
 
 class AdminController:
     def __init__(self):
         self.admin: Admin = Admin()
         self.__admin_model: AdminModel = AdminModel()
+        self._order_model: OrderModel = OrderModel()
 
     def start(self):
         try:
@@ -180,15 +178,84 @@ class AdminController:
                 self.main_menu()
         except c_exc.ExitCommandInserted as e:
             print(e)
-        except Exception as e:
-            print(e)
-            self.start()
 
     def main_menu(self):
-        # TODO: Bikin main menu admin
+        View.admin_main_menu_dialog()
+        choice = input("Masukkan Pilihan [1/2/3/4/5/exit]: ")
+        if choice.lower() == 'exit':
+            raise c_exc.ExitCommandInserted()
+        else:
+            if choice == '1':
+                self.lihat_order_menunggu_verifikasi_pembayaran()
+            elif choice == '2':
+                self.verifikasi_pembayaran_order()
+            elif choice == '3':
+                self.lihat_order_menunggu_pembatalan()
+            elif choice == '4':
+                self.konfirmasi_pembatalan_order()
+            elif choice == '5':
+                self.register()
+            else:
+                print("Pilihan tidak valid")
         pass
+
+    def lihat_order_menunggu_verifikasi_pembayaran(self):
+        orders = self._order_model.get_orders_waiting_payment_information()
+        View.orders_waiting_confirmation(orders)
+        input("Tekan Enter untuk kembali ke menu...")
+        self.main_menu()
+
+    def verifikasi_pembayaran_order(self):
+        View.verify_payment_code_dialog()
+        kode_booking = input("Masukkan kode booking: ").upper()
+        order_detail = self._order_model.get_order_with_payment_from_booking_code(kode_booking)
+        View.verify_payment_order_detail(order_detail)
+        verify = input("Verifikasi pembayaran ini? [y/N] ").upper()
+
+        if verify == 'Y':
+            self._order_model.verify_order_payment(kode_booking, self.admin)
+            input("Verifikasi berhasil. Tekan Enter untuk kembali ke menu utama...")
+        else:
+            input("Verifikasi dibatalkan. Tekan Enter untuk kembali ke menu utama...")
+        self.main_menu()
+
+    def lihat_order_menunggu_pembatalan(self):
+        orders = self._order_model.get_orders_waiting_cancel_confirmation()
+        View.orders_waiting_confirmation(orders)
+        input("Tekan Enter untuk kembali ke menu...")
+        self.main_menu()
+
+    def konfirmasi_pembatalan_order(self):
+        View.confirm_order_cancel_dialog()
+        kode_booking = input("Masukkan kode booking: ").upper()
+        order_detail = self._order_model.get_order_detail_by_booking_code(kode_booking)
+        View.order_detail(order_detail)
+        verify = input("Batalkan pembayaran ini? [y/N] ").upper()
+
+        if verify == 'Y':
+            self._order_model.confirm_order_cancel(kode_booking)
+            input("Pembatalan berhasil. Tekan Enter untuk kembali ke menu utama...")
+        else:
+            input("Pembatalan dibatalkan. Tekan Enter untuk kembali ke menu utama...")
+        self.main_menu()
+        pass
+
+    def register(self):
+        register_data = dict()
+        register_data['nama'] = input("Masukkan Nama: ")
+        register_data['email'] = input("Masukkan E-mail: ")
+        new_password = input("Masukkan Password baru: ")
+        confirm_new_password = input('Konfirmasi Password baru Anda: ')
+        if new_password == confirm_new_password:
+            register_data['password'] = new_password
+            self.__admin_model.register_new_user(register_data)
+            input("Pendaftaran berhasil. Tekan Enter untuk kembali ke menu...")
+            self.main_menu()
+        else:
+            input("Password tidak sesuai. Tekan Enter untuk kembali ke menu...")
+            self.main_menu()
 
 
 if __name__ == '__main__':
-    console = CustomerController()
+    console = AdminController()
     console.start()
