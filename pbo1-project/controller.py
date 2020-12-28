@@ -54,6 +54,9 @@ class CustomerController(BaseController):
             except c_exc.ExitCommandInserted as e:
                 print(e)
                 break
+            except KeyboardInterrupt:
+                print("Force quit app.")
+                break
 
     def login(self) -> None:
         while True:
@@ -260,7 +263,10 @@ class AdminController(BaseController):
         self.__admin_model: AdminModel = AdminModel()
 
     def start(self):
-        self.login()
+        try:
+            self.login()
+        except KeyboardInterrupt:
+            print("Force quit app.")
 
     def login(self):
         while True:
