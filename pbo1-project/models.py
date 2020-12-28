@@ -2,9 +2,19 @@ from db_connection import DBConnection
 import custom_exception as c_exc
 from order import Order
 from person import Customer, Admin
+from abc import ABC, abstractmethod
 
 
-class CustomerModel(DBConnection):
+class PersonModel(ABC):
+    @abstractmethod
+    def login(self, email: str, password: str):
+        pass
+
+    def register_new_user(self, data: dict):
+        pass
+
+
+class CustomerModel(DBConnection, PersonModel):
     def __init__(self):
         super().__init__()
 
@@ -50,7 +60,7 @@ class CustomerModel(DBConnection):
             return result
 
 
-class AdminModel(DBConnection):
+class AdminModel(DBConnection, PersonModel):
     def __init__(self):
         super().__init__()
 
@@ -182,7 +192,7 @@ class OrderModel(DBConnection):
             update_status_value = (order_id['id'],)
             self.execute(update_status_query, update_status_value)
         else:
-            print("Order Not Found")
+            raise c_exc.OrderNotFound
 
     def propose_order_cancel(self, kode_booking):
         order_id_query = "SELECT id from `order` WHERE kode_booking = %s"
@@ -197,7 +207,7 @@ class OrderModel(DBConnection):
 
             self.execute(cancel_query, cancel_value)
         else:
-            print("Order Not Found")
+            raise c_exc.OrderNotFound
 
     def get_city_id_from_paket_wisata(self, order: Order):
         query = "SELECT kota FROM paket_wisata WHERE id = %s"
@@ -244,9 +254,12 @@ class OrderModel(DBConnection):
                     "ORDER BY p.id desc "
             value = (order_id,)
             result = self.select_one(query, value)
-            return result
+            if result:
+                return result
+            else:
+                raise c_exc.OrderNotFound
         else:
-            print("Order Not Found.")
+            raise c_exc.OrderNotFound
 
     def verify_order_payment(self, kode_booking, admin: Admin):
         order_id = self.get_order_id_from_booking_code(kode_booking)
