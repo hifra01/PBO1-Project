@@ -88,6 +88,7 @@ class View:
 
     @staticmethod
     def list_paket_wisata(paket_wisata):
+        View.clear_screen()
         if not paket_wisata:
             print(f"Tidak ada paket wisata.\n")
         else:
@@ -137,6 +138,11 @@ class View:
     def confirm_order_cancel_dialog():
         View.clear_screen()
         print(":: Konfirmasi pembatalan order ::")
+
+    @staticmethod
+    def add_new_admin_dialog():
+        View.clear_screen()
+        print(":: Tambah admin baru ::")
 
 #     def pesan_dialog(self):
 #         View.clear_screen()

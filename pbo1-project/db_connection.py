@@ -1,3 +1,4 @@
+import sys
 import os.path as path
 import mysql.connector
 import yaml
@@ -21,10 +22,13 @@ class DBConnection:
                 self.__cursor = self.__con.cursor(dictionary=True, buffered=True)
         except FileNotFoundError as e:
             print(e)
+            sys.exit(1)
         except yaml.YAMLError as e:
             print(e)
+            sys.exit(1)
         except mysql.connector.Error as e:
             print(e.msg)
+            sys.exit(1)
 
     def select_one(self, query, value=tuple()):
         self.__cursor.execute(query, value)
