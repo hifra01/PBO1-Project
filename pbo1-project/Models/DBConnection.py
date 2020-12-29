@@ -5,13 +5,13 @@ import yaml
 
 
 class DBConnection:
-    def __init__(self):
+    def __init__(self, db_config_file: str) -> None:
         """
         This class will load MySQL database configuration from dbconfig.yaml file
         """
         try:
-            config_file = path.join(path.dirname(path.abspath(__file__)), 'dbconfig.yaml')
-            with open(config_file, 'r') as stream:
+            self.config_file = db_config_file
+            with open(self.config_file, 'r') as stream:
                 dbconfig = yaml.safe_load(stream)['dbconfig']
                 self.__con = mysql.connector.connect(
                     user=dbconfig['user'],
