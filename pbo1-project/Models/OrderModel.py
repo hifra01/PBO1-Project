@@ -1,101 +1,12 @@
-from db_connection import DBConnection
-import custom_exception as c_exc
-from order import Order
-from person import Customer, Admin
-from abc import ABC, abstractmethod
-
-
-class PersonModel(ABC):
-    @abstractmethod
-    def login(self, email: str, password: str):
-        pass
-
-    def register_new_user(self, data: dict):
-        pass
-
-
-class CustomerModel(DBConnection, PersonModel):
-    def __init__(self):
-        super().__init__()
-
-    def login(self, email: str, password: str) -> dict:
-        query = "SELECT p.id as person_id, c.id as customer_id, p.role, " \
-                "p.email, c.nama_lengkap, c.no_hp, c.no_ktp " \
-                "FROM person p JOIN customers c on p.id = c.person_id " \
-                "WHERE p.email = %s AND p.password = %s AND p.role = %s"
-        value = (email, password, 'customer')
-        result: dict = self.select_one(query, value)
-
-        if result is None:
-            raise c_exc.UserNotFound()
-        else:
-            return result
-
-    def register_new_user(self, data: dict) -> None:
-        person_query = "INSERT INTO person (email, password, role) " \
-                       "VALUES (%s, %s, 'customer')"
-        person_value = (data['email'], data['password'])
-        commit_person = self.execute(person_query, person_value)
-        if commit_person:
-            person_id = self.get_last_row_id()
-            customer_query = "INSERT INTO customers " \
-                             "(person_id, nama_lengkap, no_ktp, no_hp) " \
-                             "VALUES (%s, %s, %s, %s)"
-            customer_value = (person_id, data['nama'], data['no_ktp'], data['no_hp'])
-            return self.execute(customer_query, customer_value)
-        else:
-            return commit_person
-
-    def get_customer_order_history(self, customer_id: int) -> list:
-        query = "SELECT o.kode_booking, oss.keterangan, pw.nama as paket_wisata, " \
-                "o.tanggal_berangkat, o.tanggal_pulang " \
-                "FROM `order` o JOIN paket_wisata pw on pw.id = o.id_paket_wisata " \
-                "JOIN order_status_string oss on oss.id_status_order = o.id_status_order " \
-                "WHERE o.customer = %s"
-        value = (customer_id,)
-        result = self.select_all(query, value)
-        if result is None:
-            return []
-        else:
-            return result
-
-
-class AdminModel(DBConnection, PersonModel):
-    def __init__(self):
-        super().__init__()
-
-    def login(self, email: str, password: str) -> dict:
-        query = "SELECT p.id as person_id, a.id as admin_id, p.role, " \
-                "p.email, a.nama " \
-                "FROM person p JOIN admin a on p.id = a.person_id " \
-                "WHERE p.email = %s AND p.password = %s AND p.role = %s"
-        value = (email, password, 'admin')
-        result: dict = self.select_one(query, value)
-
-        if result is None:
-            raise c_exc.UserNotFound()
-        else:
-            return result
-
-    def register_new_user(self, data: dict) -> None:
-        person_query = "INSERT INTO person (email, password, role) " \
-                       "VALUES (%s, %s, 'admin')"
-        person_value = (data['email'], data['password'])
-        commit_person = self.execute(person_query, person_value)
-        if commit_person:
-            person_id = self.get_last_row_id()
-            admin_query = "INSERT INTO `admin` " \
-                          "(person_id, nama) " \
-                          "VALUES (%s, %s)"
-            admin_value = (person_id, data['nama'])
-            return self.execute(admin_query, admin_value)
-        else:
-            return commit_person
+from .DBConnection import DBConnection
+import CustomExceptions as cExc
+from Orders import Order
+from Persons import Customer, Admin
 
 
 class OrderModel(DBConnection):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db_config_file):
+        super().__init__(db_config_file)
 
     def get_order_id_from_booking_code(self, kode_booking):
         order_id_query = "SELECT id from `order` WHERE kode_booking = %s"
@@ -117,7 +28,7 @@ class OrderModel(DBConnection):
         main_result: dict = self.select_one(main_query, main_value)
 
         if main_result is None:
-            raise c_exc.OrderNotFound()
+            raise cExc.OrderNotFound()
 
         detail['kode_booking'] = main_result['kode_booking']
         detail['paket_wisata'] = main_result['paket_wisata']
@@ -191,7 +102,7 @@ class OrderModel(DBConnection):
             update_status_value = (order_id['id'],)
             self.execute(update_status_query, update_status_value)
         else:
-            raise c_exc.OrderNotFound
+            raise cExc.OrderNotFound
 
     def propose_order_cancel(self, kode_booking):
         order_id_query = "SELECT id from `order` WHERE kode_booking = %s"
@@ -206,7 +117,7 @@ class OrderModel(DBConnection):
 
             self.execute(cancel_query, cancel_value)
         else:
-            raise c_exc.OrderNotFound
+            raise cExc.OrderNotFound
 
     def get_city_id_from_paket_wisata(self, order: Order):
         query = "SELECT kota FROM paket_wisata WHERE id = %s"
@@ -256,9 +167,9 @@ class OrderModel(DBConnection):
             if result:
                 return result
             else:
-                raise c_exc.OrderNotFound
+                raise cExc.OrderNotFound
         else:
-            raise c_exc.OrderNotFound
+            raise cExc.OrderNotFound
 
     def verify_order_payment(self, kode_booking, admin: Admin):
         order_id = self.get_order_id_from_booking_code(kode_booking)
@@ -280,8 +191,3 @@ class OrderModel(DBConnection):
                     "WHERE id = %s"
             value = (order_id,)
             self.execute(query, value)
-
-
-if __name__ == "__main__":
-    model = OrderModel()
-    print(model.get_last_order_id())

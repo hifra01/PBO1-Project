@@ -1,5 +1,7 @@
-from controller import CustomerController
+from Controllers import CustomerController
+import os.path as path
 
 if __name__ == '__main__':
-    app = CustomerController()
+    db_config_file = path.join(path.dirname(path.abspath(__file__)), 'dbconfig.yaml')
+    app = CustomerController(db_config_file)
     app.start()

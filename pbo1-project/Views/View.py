@@ -1,5 +1,4 @@
 import os
-# from person import Customer, Admin
 
 
 class View:
@@ -143,73 +142,3 @@ class View:
     def add_new_admin_dialog():
         View.clear_screen()
         print(":: Tambah admin baru ::")
-
-#     def pesan_dialog(self):
-#         View.clear_screen()
-#         print("Lebih Mudah! Cukup Pilih Paket Wisata yang Anda Inginkan\n")
-#         # Pilih Paket
-#         choicePesan = input("Pilih Paketmu :")
-#         self.tambahOrangPesan()
-#         # kodePembayaran =  # kodePembayaran
-#         # print("Silahkan Melakukan Pembayaran\n"
-#               # f"Dengan Kode Pembayaran", kodePembayaran)
-#         print("Menunggu Konfirmasi Pembayaran")
-#         # Konfirmasi Admin
-#         # kodeBooking =  # kodeBooking
-#         # print("Pesanan Anda Telah berhasil\nDengan Kode Booking", kodeBooking)
-#         pass
-#
-#     # def tambahOrangPesan(self)
-#         nama = input("Masukkan Nama Lengkap")
-#         noIdentitas = input("Massukan Nomor KTP")
-#         self.__customer.register(nama, noIdentitas)
-#
-#     def riwayat_dialog(self):
-#         # show riwayat transaksi
-#         pass
-#
-#     def pembatalan_dialog(self):
-#         kodeBooking = input("Silahkan Masukkan Kode Booking")
-#         # Kode Booking Benar, Admin Konfirmasi
-#         print("Menunggu Konfirmasi Pembatalan")
-#         # Konfirmasi Admin
-#         print("Transaksi Anda Berhasil Dibatalkan")
-#
-#
-# class AdminView:
-#     """
-#     Class untuk interface Admin.
-#     Setiap menu jadi sebuah metode tersendiri
-#     """
-#
-#     def __init__(self):
-#         self.__admin = Admin()
-#
-#     def login_dialog(self):
-#         email = input("Masukkan E-mail")
-#         password = input("Masukkan Password")
-#         self.__admin.login(email, password)
-#         pass
-#
-#     def berandaAdmin_dialog(sefl):
-#         print(f"Selamat Datang, Admin\n"
-#               f"1. Konfirmasi Pembayaran\n"
-#               f"2. Konfirmasi Pembatalan GTransaksi\n")
-#         f"0. Keluar"
-#
-#     choiceBerandaAdmin = int(input("Masukkan Pilihan [0/1/2]:"))
-#
-#     if choiceBerandaAdmin == 1:
-#         # self.konfirmasiPembayaran_dialog()
-#     elif choiceBerandaAdmin == 2:
-#         self.konfirmasiPembatalan_dialog()
-#
-#
-# def konfirmasiPembayaran_dialog(self):
-#     # Lihat Transaksi & Pilih Transaksi
-#     choiceKonfirmasiPembayaran = input("Konfirmasi Pembayaran\n1. Iya\n2. Tidak [1/2] :")
-#
-#
-# def konfirmasiPembatalan_dialog(self):
-#     # Lihat Transaksi & Pilih Transaksi
-#     choiceKonfirmasiPembatalan = input("Konfirmasi Pembatalan\n1. Iya\n2. Tidak [1/2] :")
