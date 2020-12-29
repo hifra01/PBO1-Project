@@ -165,7 +165,6 @@ class OrderModel(DBConnection):
         self.execute(order_query, order_value)
 
         new_order_id = self.get_last_row_id()
-        print(new_order_id)
         daftar_peserta = list()
         for peserta in order.daftar_peserta:
             daftar_peserta.append((new_order_id, peserta['nama_peserta'], peserta['no_ktp']))
