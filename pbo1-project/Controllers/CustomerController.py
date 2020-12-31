@@ -46,9 +46,11 @@ class CustomerController(BaseController):
         while True:
             try:
                 View.login_dialog()
-                email: str = input("Masukkan email (ketik 'exit' untuk keluar): ")
+                email: str = input("Masukkan email (ketik 'exit' untuk keluar atau 'back' untuk kembali): ")
                 if email.lower() == 'exit':
                     raise cExc.ExitCommandInserted()
+                elif email.lower() == 'back':
+                    raise cExc.BackCommandInserted()
                 else:
                     password: str = getpass("Masukkan password: ")
                     login = self._cs_model.login(email=email, password=password)
@@ -58,6 +60,8 @@ class CustomerController(BaseController):
             except cExc.UserNotFound as e:
                 print(e)
                 input("Tekan Enter untuk melanjutkan...")
+            except cExc.BackCommandInserted:
+                break
 
     def register(self):
         while True:
@@ -90,21 +94,26 @@ class CustomerController(BaseController):
 
     def main_menu(self):
         while True:
-            View.main_menu_dialog()
-            choice = input("Masukkan Pilihan [1/2/3/4/exit]: ")
-            if choice.lower() == 'exit':
-                raise cExc.ExitCommandInserted()
-            else:
-                if choice == '1':
-                    self.new_order()
-                elif choice == '2':
-                    self.list_order_history()
-                elif choice == '3':
-                    self.confirm_payment()
-                elif choice == '4':
-                    self.cancel_order()
+            try:
+                View.main_menu_dialog()
+                choice = input("Masukkan Pilihan [1/2/3/4/exit]: ")
+                if choice.lower() == 'exit':
+                    raise cExc.ExitCommandInserted()
+                elif choice.lower() == 'back':
+                    raise cExc.BackCommandInserted()
                 else:
-                    input("Pilihan tidak valid. Tekan Enter untuk melanjutkan...")
+                    if choice == '1':
+                        self.new_order()
+                    elif choice == '2':
+                        self.list_order_history()
+                    elif choice == '3':
+                        self.confirm_payment()
+                    elif choice == '4':
+                        self.cancel_order()
+                    else:
+                        input("Pilihan tidak valid. Tekan Enter untuk melanjutkan...")
+            except cExc.BackCommandInserted:
+                break
 
     def new_order(self):
         new_order = Order()

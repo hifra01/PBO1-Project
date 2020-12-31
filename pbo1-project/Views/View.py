@@ -49,7 +49,8 @@ class View:
               f"2. Riwayat Pesanan\n"
               f"3. Konfirmasi Pembayaran Pesanan\n"
               f"4. Ajukan Pembatalan Transaksi\n"
-              f"Ketik 'exit' untuk keluar\n\n")
+              f"Ketik 'exit' untuk keluar\n"
+              f"Ketik 'back' untuk kembali ke halaman login\n\n")
 
     @staticmethod
     def order_history_list(orders: list):

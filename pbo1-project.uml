@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#D:/Developments/PBO1-Project/pbo1-project</OriginalElement>
+  <nodes>
+    <node x="535.4040000000005" y="335.5">abc.ABCMeta</node>
+    <node x="1854.0000000000002" y="1583.5">CustomExceptions.UserNotFound.UserNotFound</node>
+    <node x="1200.0000000000002" y="1138.0">Models.DBConnection.DBConnection</node>
+    <node x="0.0" y="1473.5">Controllers.CustomerController.CustomerController</node>
+    <node x="1116.0000000000002" y="1562.0">Models.CustomerModel.CustomerModel</node>
+    <node x="444.0000000000002" y="1484.5">Controllers.AdminController.AdminController</node>
+    <node x="3323.0" y="681.0">Orders.Order.Order</node>
+    <node x="3479.0" y="1116.0">Persons.Customer.Customer</node>
+    <node x="2242.0" y="1583.5">CustomExceptions.OrderNotFound.OrderNotFound</node>
+    <node x="2834.0" y="1238.5">Exception</node>
+    <node x="242.00000000000023" y="1182.0">Controllers.BaseController.BaseController</node>
+    <node x="2738.0" y="758.0">BaseException</node>
+    <node x="1440.0000000000002" y="1441.0">Models.OrderModel.OrderModel</node>
+    <node x="639.9040000000005" y="858.5">abc.ABC</node>
+    <node x="840.0000000000002" y="1573.0">Models.AdminModel.AdminModel</node>
+    <node x="3146.0" y="1583.5">CustomExceptions.BackCommandInserted.BackCommandInserted</node>
+    <node x="2646.0" y="1583.5">CustomExceptions.ExitCommandInserted.ExitCommandInserted</node>
+    <node x="836.0000000000002" y="1215.5">Models.PersonModel.PersonModel</node>
+    <node x="2956.25" y="0.0">typing.Hashable</node>
+    <node x="3646.0" y="714.0">Persons.Person.Person</node>
+    <node x="3054.0" y="681.5">Views.View.View</node>
+    <node x="2916.75" y="104.0">object</node>
+    <node x="3769.0" y="1182.0">Persons.Admin.Admin</node>
+    <node x="3646.0" y="1583.5">CustomExceptions.UnknownCommand.UnknownCommand</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="CustomExceptions.UserNotFound.UserNotFound" target="Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="2038.0000000000002" y="1411.0" />
+      <point x="2844.4000000000005" y="1411.0" />
+      <point x="-41.59999999999991" y="15.0" />
+    </edge>
+    <edge source="abc.ABC" target="object">
+      <point x="22.0" y="-15.0" />
+      <point x="705.9040000000005" y="641.0" />
+      <point x="2936.0" y="641.0" />
+      <point x="-96.25" y="258.5" />
+    </edge>
+    <edge source="Views.View.View" target="object">
+      <point x="0.0" y="-192.0" />
+      <point x="3178.5" y="661.0" />
+      <point x="3051.5" y="661.0" />
+      <point x="19.25" y="258.5" />
+    </edge>
+    <edge source="abc.ABC" target="abc.ABCMeta">
+      <point x="-22.0" y="-15.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="Exception" target="BaseException">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="115.5" />
+    </edge>
+    <edge source="Models.PersonModel.PersonModel" target="abc.ABC">
+      <point x="0.0" y="-38.0" />
+      <point x="972.0000000000002" y="1091.0" />
+      <point x="705.9040000000005" y="1091.0" />
+      <point x="22.0" y="15.0" />
+    </edge>
+    <edge source="Models.AdminModel.AdminModel" target="Models.DBConnection.DBConnection">
+      <point x="64.0" y="-49.0" />
+      <point x="1032.0000000000002" y="1421.0" />
+      <point x="1248.0000000000002" y="1421.0" />
+      <point x="-96.0" y="115.5" />
+    </edge>
+    <edge source="CustomExceptions.UnknownCommand.UnknownCommand" target="Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="3846.0" y="1411.0" />
+      <point x="2927.6000000000004" y="1411.0" />
+      <point x="41.59999999999991" y="15.0" />
+    </edge>
+    <edge source="Persons.Person.Person" target="object">
+      <point x="0.0" y="-159.5" />
+      <point x="3751.0" y="641.0" />
+      <point x="3128.5" y="641.0" />
+      <point x="96.25" y="258.5" />
+    </edge>
+    <edge source="Orders.Order.Order" target="object">
+      <point x="0.0" y="-192.5" />
+      <point x="3474.5" y="651.0" />
+      <point x="3090.0" y="651.0" />
+      <point x="57.75" y="258.5" />
+    </edge>
+    <edge source="Persons.Admin.Admin" target="Persons.Person.Person">
+      <point x="0.0" y="-71.5" />
+      <point x="3888.0" y="1091.0" />
+      <point x="3803.5" y="1091.0" />
+      <point x="52.5" y="159.5" />
+    </edge>
+    <edge source="object" target="typing.Hashable">
+      <point x="0.0" y="-258.5" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="Models.CustomerModel.CustomerModel" target="Models.PersonModel.PersonModel">
+      <point x="-76.0" y="-60.0" />
+      <point x="1192.0000000000002" y="1411.0" />
+      <point x="1040.0000000000002" y="1411.0" />
+      <point x="68.0" y="38.0" />
+    </edge>
+    <edge source="Controllers.AdminController.AdminController" target="Controllers.BaseController.BaseController">
+      <point x="0.0" y="-137.5" />
+      <point x="632.0000000000002" y="1421.0" />
+      <point x="512.0000000000002" y="1421.0" />
+      <point x="90.0" y="71.5" />
+    </edge>
+    <edge source="CustomExceptions.ExitCommandInserted.ExitCommandInserted" target="Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="Models.AdminModel.AdminModel" target="Models.PersonModel.PersonModel">
+      <point x="-64.0" y="-49.0" />
+      <point x="-68.0" y="38.0" />
+    </edge>
+    <edge source="Controllers.BaseController.BaseController" target="abc.ABC">
+      <point x="0.0" y="-71.5" />
+      <point x="422.0000000000002" y="1091.0" />
+      <point x="661.9040000000005" y="1091.0" />
+      <point x="-22.0" y="15.0" />
+    </edge>
+    <edge source="Models.CustomerModel.CustomerModel" target="Models.DBConnection.DBConnection">
+      <point x="76.0" y="-60.0" />
+      <point x="0.0" y="115.5" />
+    </edge>
+    <edge source="CustomExceptions.BackCommandInserted.BackCommandInserted" target="Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="3386.0" y="1421.0" />
+      <point x="2906.8" y="1421.0" />
+      <point x="20.800000000000182" y="15.0" />
+    </edge>
+    <edge source="Models.DBConnection.DBConnection" target="object">
+      <point x="0.0" y="-115.5" />
+      <point x="1344.0000000000002" y="651.0" />
+      <point x="2974.5" y="651.0" />
+      <point x="-57.75" y="258.5" />
+    </edge>
+    <edge source="Persons.Customer.Customer" target="Persons.Person.Person">
+      <point x="0.0" y="-137.5" />
+      <point x="3614.0" y="1091.0" />
+      <point x="3698.5" y="1091.0" />
+      <point x="-52.5" y="159.5" />
+    </edge>
+    <edge source="Controllers.CustomerController.CustomerController" target="Controllers.BaseController.BaseController">
+      <point x="0.0" y="-148.5" />
+      <point x="212.0" y="1421.0" />
+      <point x="332.0000000000002" y="1421.0" />
+      <point x="-90.0" y="71.5" />
+    </edge>
+    <edge source="Models.OrderModel.OrderModel" target="Models.DBConnection.DBConnection">
+      <point x="0.0" y="-181.0" />
+      <point x="1637.0000000000002" y="1421.0" />
+      <point x="1440.0000000000002" y="1421.0" />
+      <point x="96.0" y="115.5" />
+    </edge>
+    <edge source="BaseException" target="object">
+      <point x="0.0" y="-115.5" />
+      <point x="2886.0" y="661.0" />
+      <point x="3013.0" y="661.0" />
+      <point x="-19.25" y="258.5" />
+    </edge>
+    <edge source="CustomExceptions.OrderNotFound.OrderNotFound" target="Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="2434.0" y="1421.0" />
+      <point x="2865.2" y="1421.0" />
+      <point x="-20.800000000000182" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7000000000000001" x="534.0" y="1675.857142857143" />
+  <SelectedNodes>
+    <node>Persons.Admin.Admin</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+</Diagram>
+
